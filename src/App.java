@@ -1,47 +1,51 @@
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
-public class App {
+class Loan {
 
-    public static void main(String[] args) throws Exception {
+    LocalDate BeginDate;
+    LocalDate EndDate;
+    double Rate;
+    double Amount;
+    int PayDayOfMonth;
 
-        int TotalPayments = 60; // post testing 60
-        int PayDayOfMonth = 3; // after credit card payment
+    int TotalPayments;
+    LocalDate TranDate[];
+    double DailyBalance[];
 
-        double DailyInterest = 1 + .02 / 365;
+    Loan(LocalDate b, LocalDate e, double r, double p, int pd) {
 
-        LocalDate OriginationDate = LocalDate.of(2021, 3, 29);
-        LocalDate FirstPaymentDate = LocalDate.of(2021, 4, PayDayOfMonth); // start right away
-        LocalDate FinalPaymentDate = FirstPaymentDate.plusMonths(TotalPayments); //
-        LocalDate LastBalanceDated = LocalDate.of(2021, 7, 31);
+        BeginDate = b;
+        EndDate = e;
+        Rate = r;
+        Amount = p;
+        PayDayOfMonth = pd;
 
-        double LastBalance = 22028.65;
-        double Balance = LastBalance;
+        int days = (int) ChronoUnit.DAYS.between(b, e) + 1;
+        TotalPayments = (int) ChronoUnit.MONTHS.between(b, e);
 
-        double MonthlyPaymentMin = LastBalance / TotalPayments;
-        double MonthlyPaymentMax = MonthlyPaymentMin + 200;
+        TranDate = new LocalDate[days];
+        DailyBalance = new double[days];
+
+        double DailyInterest = 1 + (Rate / 100) / 365;
+
+        double Balance = Amount;
+
+        double MonthlyPaymentMin = Amount / TotalPayments;
+        double MonthlyPaymentMax = Amount * Math.pow(DailyInterest, days) / TotalPayments;
         double MonthlyPayment = (MonthlyPaymentMin + MonthlyPaymentMax) / 2;
 
-        LocalDate TranDate[] = new LocalDate[TotalPayments * 31];
-        double DailyBalance[] = new double[TotalPayments * 31];
-
         while (Balance > 0.05 || Balance < -0.05) {
-    //        for(int j = 0; j<10; j++){
 
             System.out.println("Balance = " + Balance);
 
-            LocalDate d = LastBalanceDated;
-            Balance = LastBalance;
-
+            LocalDate d = BeginDate;
+            Balance = Amount;
 
             System.out.println("MonthlyPayment = " + MonthlyPayment);
 
-            int i = 0;
-            TranDate[i] = d;
-            DailyBalance[i] = Balance;
+            for (int i = 0; i < days; i++) {
 
-            while (d.isBefore(FinalPaymentDate) || d.isEqual(FinalPaymentDate)) {
-
-                ++i;
                 d = d.plusDays(1);
                 TranDate[i] = d;
                 Balance *= DailyInterest;
@@ -56,13 +60,50 @@ public class App {
             else
                 MonthlyPaymentMax = MonthlyPayment;
 
-
             MonthlyPayment = (MonthlyPaymentMin + MonthlyPaymentMax) / 2;
 
         }
 
-      //  for (int i = 0; i < TotalPayments * 31; i++)
-         //   System.out.println(TranDate[i] + ", " + DailyBalance[i]);
+    }
+
+    int getDays() {
+
+        return TranDate.length - 1;
+
+    }
+
+    int getPayments() {
+
+        return TotalPayments;
+    }
+
+    void getDetail() {
+        for (int i = 0; i < 2 * 31; i++)
+            System.out.println(TranDate[i] + ", " + DailyBalance[i]);
+
+    }
+
+}
+
+public class App {
+
+    public static void main(String[] args) throws Exception {
+
+        double Balance20210731 = 22028.65;
+        double Rate = 2.0;
+        int PayDayOfMonth = 3; // after credit card payment
+
+        double Balance20210831 = Balance20210731 * Math.pow((1 + (Rate / 100) / 365),31);
+
+        LocalDate BeginDate = LocalDate.of(2021, 8, 31);
+        LocalDate EndDate = LocalDate.of(2026, 4, PayDayOfMonth);
+
+        Loan l = new Loan(BeginDate, EndDate, Rate, Balance20210831, PayDayOfMonth);
+        System.out.println("dayl: " + l.getDays());
+
+        System.out.println("dayl: " + l.getPayments());
+
+        l.getDetail();
 
     }
 }
