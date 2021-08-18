@@ -23,7 +23,7 @@ class Loan {
         PayDayOfMonth = pd;
 
         int days = (int) ChronoUnit.DAYS.between(b, e) + 1;
-        NumberPayments = (int) ChronoUnit.MONTHS.between(b, e);
+        NumberPayments = 1 + (int) ChronoUnit.MONTHS.between(b, e);
 
         TranDate = new LocalDate[days];
         DailyBalance = new double[days];
@@ -39,6 +39,7 @@ class Loan {
         while (Balance > 0.01 || Balance < -0.01) {
 
             System.out.println("MonthlyPayment = " + MonthlyPayment + ", Balance = " + Balance);
+            //System.out.println("MonthlyPayment = " + Math.round(MonthlyPayment * 100)/100d + ", Balance = " + Balance);
 
             LocalDate d = BeginDate;
             Balance = Amount;
@@ -78,7 +79,7 @@ class Loan {
     }
 
     double getMonthlyPayment() {
-        return MonthlyPayment;
+        return Math.round(MonthlyPayment * 100)/100d;
     }
 
     void getDetail() {
