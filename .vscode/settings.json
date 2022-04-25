@@ -1,4 +1,8 @@
 {
     "java.project.sourcePaths": ["src"],
-    "java.project.outputPath": "bin"
+    "java.project.outputPath": "bin",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "c:\\Users\\joe\\Downloads\\sqljdbc_9.4.0.0_enu\\sqljdbc_9.4\\enu\\mssql-jdbc-9.4.0.jre11.jar"
+    ]
 }
