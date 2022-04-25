@@ -124,6 +124,7 @@ public class App {
     public static void main(String[] args) throws Exception {
 
         LocalDate FirstPaymentDate = LocalDate.of(2022, 5, 15); // day after credit card payment
+        // new clone edit post branch delete
         LocalDate LoanDueDate = LocalDate.of(2026, 4, 30); // total payoff before this date
         double Rate = 2.0;
         
