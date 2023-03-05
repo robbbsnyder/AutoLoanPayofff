@@ -159,7 +159,7 @@ public class App {
         System.out.println("Remaining Months: " + l.getNumberPayments());
         System.out.println("Monthly Payment: " + l.getMonthlyPayment());
 
-        l.getDetail("c:\\Dev\\Loan.csv");
+        l.getDetail("Loan.csv");
 
 
     }
