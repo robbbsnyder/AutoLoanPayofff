@@ -123,7 +123,7 @@ public class App {
 
     public static void main(String[] args) throws Exception {
 
-        LocalDate FirstPaymentDate = LocalDate.of(2023, 1, 15); // day after credit card payment
+        LocalDate FirstPaymentDate = LocalDate.of(2024, 3, 15); // day after credit card payment
         LocalDate LoanDueDate = LocalDate.of(2026, 4, 30); // total payoff before this date
         double Rate = 2.0;
         
