@@ -171,9 +171,8 @@ public class App {
 
     public static void main(String[] args) throws Exception {
 
-        // old local master?
-        // after checkout devissue01
-        LocalDate FirstPaymentDate = LocalDate.of(2024, 3, 15); // day after credit card payment
+        //new feature branch
+        LocalDate FirstPaymentDate = LocalDate.of(2023, 3, 15); // day after credit card payment
         LocalDate LoanDueDate = LocalDate.of(2026, 4, 30); // total payoff before this date
         double Rate = 2.0;
         
