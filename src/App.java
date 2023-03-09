@@ -75,6 +75,54 @@ class Loan {
 
     }
 
+
+    /**
+     * balance over time for a given monthly payment
+     */
+    Loan(LocalDate b, LocalDate e, double r, double p, int pd, double pmt) {
+
+        BeginDate = b;
+        EndDate = e;
+        Rate = r;
+        Amount = p;
+        PayDayOfMonth = pd;
+
+        int days = (int) ChronoUnit.DAYS.between(b, e) + 1;
+        NumberPayments = 1 + (int) ChronoUnit.MONTHS.between(b, e);
+
+        TranDate = new LocalDate[days];
+        DailyBalance = new double[days];
+        Payment = new double[days];
+
+        double DailyInterest = 1 + (Rate / 100) / 365;
+
+        double Balance = Amount;
+
+        double MonthlyPayment = pmt;
+
+        System.out.println("Opening Balance = " + Math.round(Balance * 100) / 100d);
+
+            LocalDate d = BeginDate;
+            Balance = Amount;
+
+            TranDate[0] = d;
+            DailyBalance[0] = Balance;
+
+            for (int i = 1; i < days; i++) {
+                d = d.plusDays(1);
+                TranDate[i] = d;
+                Balance *= DailyInterest;
+                if (d.getDayOfMonth() == PayDayOfMonth) {
+                    Balance -= MonthlyPayment;
+                    Payment[i] = MonthlyPayment;
+                }
+                DailyBalance[i] = Balance;
+            }
+            System.out.println("mPmt = " + Math.round(MonthlyPayment * 100) / 100d + " -> Balance = "
+                    + Math.round(Balance * 100) / 100d);
+
+    }
+
     int getDays() {
 
         return TranDate.length - 1;
@@ -123,6 +171,8 @@ public class App {
 
     public static void main(String[] args) throws Exception {
 
+        // old local master?
+        // after checkout devissue01
         LocalDate FirstPaymentDate = LocalDate.of(2024, 3, 15); // day after credit card payment
         LocalDate LoanDueDate = LocalDate.of(2026, 4, 30); // total payoff before this date
         double Rate = 2.0;
@@ -160,6 +210,13 @@ public class App {
         System.out.println("Monthly Payment: " + l.getMonthlyPayment());
 
         l.getDetail("Loan.csv");
+
+        Loan l2 = new Loan(BeginDate, EndDate, Rate, Principal, PayDayOfMonth, 460);
+        System.out.println("Remaining Days: " + l2.getDays());
+        System.out.println("Remaining Months: " + l2.getNumberPayments());
+        System.out.println("Monthly Payment: " + l2.getMonthlyPayment());
+
+        l2.getDetail("Loan2.csv");
 
 
     }
